@@ -222,6 +222,7 @@ export function SetupScreen({ mode, onBack, onStart }: Props) {
     if (mode === 'rounds') {
       return formatTime(workSec * numRounds + restSec * (numRounds - 1));
     }
+    if (mode === 'emom') return formatTime(60 * numSets + setBetweenRestSec * (numSets - 1));
     const perSet = totalMinutes * 60;
     return formatTime(perSet * numSets + setBetweenRestSec * (numSets - 1));
   })();
@@ -239,8 +240,8 @@ export function SetupScreen({ mode, onBack, onStart }: Props) {
     } else {
       onStart({
         mode,
-        totalSeconds: totalMinutes * 60,
-        workSeconds: 0,         // unused in amrap/emom
+        totalSeconds: mode === 'emom' ? 60 : totalMinutes * 60,
+        workSeconds: 0,
         restSeconds: setBetweenRestSec,
         numRounds: numSets,
         countdownSecs: 3,
@@ -297,25 +298,17 @@ export function SetupScreen({ mode, onBack, onStart }: Props) {
         {/* ── EMOM fields ── */}
         {mode === 'emom' && (
           <>
-            <SectionLabel>Workout</SectionLabel>
+            <SectionLabel>Rounds</SectionLabel>
             <Stepper
-              label="Minutes per set"
-              value={totalMinutes}
-              onChange={setTotalMinutes}
-              min={1}
-              max={60}
-            />
-            <SectionLabel>Sets</SectionLabel>
-            <Stepper
-              label="Number of sets"
+              label="Rounds (1 min each)"
               value={numSets}
               onChange={setNumSets}
               min={1}
-              max={20}
+              max={60}
             />
             {numSets > 1 && (
               <TimeStepper
-                label="Rest between sets"
+                label="Rest between rounds"
                 value={setBetweenRestSec}
                 onChange={setSetBetweenRestSec}
                 min={0}
@@ -370,11 +363,11 @@ export function SetupScreen({ mode, onBack, onStart }: Props) {
           )}
 
           {mode === 'emom' && numSets === 1 && (
-            <p className="text-white font-bold">{totalMinutes} min EMOM ({totalMinutes} rounds)</p>
+            <p className="text-white font-bold">{numSets} round EMOM</p>
           )}
           {mode === 'emom' && numSets > 1 && (
             <p className="text-white font-bold">
-              {numSets} × {totalMinutes} min EMOM · {formatTime(setBetweenRestSec)} rest
+              {numSets} round EMOM{setBetweenRestSec > 0 ? ` · ${formatTime(setBetweenRestSec)} rest` : ''}
             </p>
           )}
 
