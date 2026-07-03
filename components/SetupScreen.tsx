@@ -211,10 +211,10 @@ export function SetupScreen({ mode, onBack, onStart }: Props) {
   const [totalMinutes, setTotalMinutes] = useState(mode === 'emom' ? 10 : 20);
   // All modes: rounds/sets count and rest between
   const [numSets, setNumSets] = useState(1);
-  const [setBetweenRestSec, setSetBetweenRestSec] = useState(60);
+  const [setBetweenRestSec, setSetBetweenRestSec] = useState(0);
   // Rounds only: work/rest intervals
   const [workSec, setWorkSec] = useState(40);
-  const [restSec, setRestSec] = useState(20);
+  const [restSec, setRestSec] = useState(0);
   const [numRounds, setNumRounds] = useState(8);
 
   // Derived totals for summary
@@ -286,7 +286,7 @@ export function SetupScreen({ mode, onBack, onStart }: Props) {
                 label="Rest between sets"
                 value={setBetweenRestSec}
                 onChange={setSetBetweenRestSec}
-                min={10}
+                min={0}
                 max={600}
                 step={10}
               />
@@ -318,7 +318,7 @@ export function SetupScreen({ mode, onBack, onStart }: Props) {
                 label="Rest between sets"
                 value={setBetweenRestSec}
                 onChange={setSetBetweenRestSec}
-                min={10}
+                min={0}
                 max={600}
                 step={10}
               />
@@ -342,7 +342,7 @@ export function SetupScreen({ mode, onBack, onStart }: Props) {
               label="Rest time"
               value={restSec}
               onChange={setRestSec}
-              min={5}
+              min={0}
               max={3600}
               step={5}
             />
